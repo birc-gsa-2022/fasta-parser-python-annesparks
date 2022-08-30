@@ -1,6 +1,6 @@
 import argparse
 import sys
-
+import fasta
 
 def main():
     argparser = argparse.ArgumentParser(
@@ -18,8 +18,11 @@ def main():
     )
     args = argparser.parse_args()
 
-    print(f"Now I need to process the records in {args.fasta}")
-    print(f"and the coordinates in {args.coords}")
+    coords = [l.split() for l in args.coords if l]
+    out = fasta.fasta_parse(args.fasta)
+    for c in coords:
+        e = next(o for o in out if o[0] == c[0])
+        print(e[1][int(c[1])-1:int(c[2])-1])
 
 
 if __name__ == '__main__':

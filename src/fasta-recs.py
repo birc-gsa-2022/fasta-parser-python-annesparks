@@ -1,5 +1,5 @@
 import argparse
-
+import fasta
 
 def main():
     argparser = argparse.ArgumentParser(
@@ -10,8 +10,11 @@ def main():
         type=argparse.FileType('r')
     )
     args = argparser.parse_args()
+    
+    out = fasta.fasta_parse(args.fasta)
 
-    print(f"Now I need to process the records in {args.fasta}")
+    for o in out:
+        print("\t".join(o))
 
 
 if __name__ == '__main__':
