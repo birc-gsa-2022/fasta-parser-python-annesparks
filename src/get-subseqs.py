@@ -1,6 +1,6 @@
 import argparse
 import sys
-
+import fasta
 
 def main():
     argparser = argparse.ArgumentParser(
@@ -18,23 +18,11 @@ def main():
     )
     args = argparser.parse_args()
 
-    coords = [l.split() for l in args.coords.readlines()]
-        
-    names = []
-    out = []
-    index = -1
-    for l in args.fasta.readlines():
-        if l[0] == ">":
-            index += 1
-            trimmed = l[1:].strip()
-            names.append(trimmed)
-            out.append("")
-        else:
-            out[index] += l.strip()
-    
+    coords = [l.split() for l in args.coords if l]
+    out = fasta.fasta_parse(args.fasta)
     for c in coords:
-        index = names.index(c[0])
-        print(out[index][int(c[1])-1:int(c[2])-1])
+        e = next(o for o in out if o[0] == c[0])
+        print(e[1][int(c[1])-1:int(c[2])-1])
 
 
 if __name__ == '__main__':

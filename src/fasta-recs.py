@@ -1,5 +1,5 @@
 import argparse
-
+import fasta
 
 def main():
     argparser = argparse.ArgumentParser(
@@ -11,18 +11,10 @@ def main():
     )
     args = argparser.parse_args()
     
-    out = []
-    index = -1
-    for l in args.fasta.readlines():
-        if l[0] == ">":
-            index += 1
-            trimmed = l[1:].strip()
-            out.append(trimmed + "\t")
-        else:
-            out[index] += l.strip()
+    out = fasta.fasta_parse(args.fasta)
 
     for o in out:
-        print(o)
+        print("\t".join(o))
 
 
 if __name__ == '__main__':
