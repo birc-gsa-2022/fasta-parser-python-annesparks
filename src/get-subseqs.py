@@ -18,8 +18,23 @@ def main():
     )
     args = argparser.parse_args()
 
-    print(f"Now I need to process the records in {args.fasta}")
-    print(f"and the coordinates in {args.coords}")
+    coords = [l.split() for l in args.coords.readlines()]
+        
+    names = []
+    out = []
+    index = -1
+    for l in args.fasta.readlines():
+        if l[0] == ">":
+            index += 1
+            trimmed = l[1:].strip()
+            names.append(trimmed)
+            out.append("")
+        else:
+            out[index] += l.strip()
+    
+    for c in coords:
+        index = names.index(c[0])
+        print(out[index][int(c[1])-1:int(c[2])-1])
 
 
 if __name__ == '__main__':
